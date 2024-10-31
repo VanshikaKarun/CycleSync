@@ -8,7 +8,12 @@ import {View,
 import AMLLoading from '../components/AMLLoading';
 import InfoHeader from '../components/InfoHeader';
 
-function ListDiscomfort(): React.JSX.Element{
+import {NativeStackScreenProps, NativeStackNavigationProp} from "@react-navigation/native-stack"
+import {RootStackParameterList} from '../App'
+
+type ListDiscomfortProp = NativeStackScreenProps<RootStackParameterList, 'ListDiscomfort'>
+
+function ListDiscomfort({navigation}: ListDiscomfortProp): React.JSX.Element{
     const discomforts = [
         'Painful Menstrual Cramps',
         'PMS Symptoms',
@@ -49,7 +54,8 @@ function ListDiscomfort(): React.JSX.Element{
                 </View>
             </View>
             <View style={styles.alignButton}>
-            <TouchableOpacity style={styles.customButton}>
+            <TouchableOpacity style={styles.customButton}
+            onPress={() => navigation.push('ReproductiveDisorder')}>
                 <Text style={styles.buttonText}>NEXT</Text>
             </TouchableOpacity>
             </View>
@@ -59,8 +65,7 @@ function ListDiscomfort(): React.JSX.Element{
 
 const styles = StyleSheet.create({
     content: {
-        position: 'absolute',
-        top: 150,
+        top: 50,
         margin: 20,
         padding: 15,
     },

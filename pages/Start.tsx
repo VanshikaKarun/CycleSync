@@ -6,16 +6,25 @@ import {
 } from 'react-native';
 
 import Logo from '../components/Logo';
+import Icons from 'react-native-vector-icons/FontAwesome';
+import Icons2 from 'react-native-vector-icons/Entypo'
+import Icons3 from 'react-native-vector-icons/FontAwesome5'
 
-function Start() : React.JSX.Element{
+import {NativeStackScreenProps} from "@react-navigation/native-stack"
+import {RootStackParameterList} from '../App'
+
+type StartProps = NativeStackScreenProps<RootStackParameterList, 'Start'>
+
+function Start({navigation} : StartProps) : React.JSX.Element{
     return(
         <View>
             <View style={styles.box}>
                 <Logo fontSize={70}/>
             </View>
             <View>
-                <TouchableOpacity style={styles.nextArrow}>
-                    <Text style={styles.arrow}>→</Text>
+                <TouchableOpacity style={styles.nextArrow}
+                onPress={() => navigation.push("StartPage", {userid: "21BPS1196"})}>
+                    <Icons3 name="arrow-right" size = {60} color={"white"} style={styles.arrow}/>
                 </TouchableOpacity>
             </View>
             <View style={styles.container}>
@@ -50,11 +59,7 @@ const styles = StyleSheet.create({
       right: -130,
     },
     arrow: {
-      color: 'white',
-      fontWeight: 'bold',
-      fontSize: 100,
-      left: -50,
-      top: -15
+      left: -30,
     },
     title: {
       color: '#E82B8E', 

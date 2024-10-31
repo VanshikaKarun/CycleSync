@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import {View,
     Text,
@@ -14,7 +14,12 @@ import { Calendar } from 'react-native-calendars';
 import InfoHeader from '../components/InfoHeader';
 import AMLLoading from '../components/AMLLoading';
 
-function PeriodStartDate(): React.JSX.Element{
+import {NativeStackScreenProps, NativeStackNavigationProp} from "@react-navigation/native-stack"
+import {RootStackParameterList} from '../App'
+
+type PeriodStartDateProp = NativeStackScreenProps<RootStackParameterList, 'PeriodStartDate'>
+
+function PeriodStartDate({navigation}: PeriodStartDateProp): React.JSX.Element{
     const today = new Date();
 
     const formatDate = (date: Date) => {
@@ -32,6 +37,22 @@ function PeriodStartDate(): React.JSX.Element{
     const todayFormatted = formatDate(today);
     const firstDayOfMonth = getFirstDayOfMonth();
 
+    const [selectedDay, setSelectedDay] = useState(todayFormatted);
+
+    const onDayPress = (day:any) => {
+        const selectedDay = day.dateString;
+        setSelectedDay(selectedDay);
+        console.log(selectedDay);
+    };
+
+    const markedDates = {
+        [selectedDay]: {
+            selected: true,
+            selectedColor: 'pink',
+            selectedTextColor: 'white',
+        }
+    };
+
     return(
         <View>
             <InfoHeader/>
@@ -39,33 +60,21 @@ function PeriodStartDate(): React.JSX.Element{
             <View style={styles.content}>
                 <Text style={styles.title}>When did your last Period start?</Text>
                 <View style={styles.calendarContainer}>
-                <Calendar style={styles.calStyle} onDayPress={(date: any) => console.log(date)}
+                <Calendar 
+                    style={styles.calStyle} 
+                    onDayPress={onDayPress}
                     initialDate={todayFormatted}
                     minDate={firstDayOfMonth}
                     maxDate={todayFormatted}
-                    hideExtraDays={true} //hides the extra days of another month showing
-                    hideArrows={true} //forward and backward arrow to change month
-                    // disableArrowLeft={true}
-                    // disableArrowRight={true} //Disables the arrow that side
-
-                    // single selection on the date
-                    markedDates={{
-                        '2024-09-03': {
-                            // marked: true,
-                            // dotColor: 'red',
-                            selected: true,
-                            selectedColor: 'pink', selectedTextColor: 'white'
-                        }
-                    }}
-
-                    // multi-dot to show multi dots on a date
-                    
-                    // use Periods to select a period of dates
+                    hideExtraDays={true} 
+                    hideArrows={true} 
+                    markedDates={markedDates}
                 />
                 </View>
             </View>
             <View style={styles.alignButton}>
-                <TouchableOpacity style={styles.customButton}>
+                <TouchableOpacity style={styles.customButton}
+                onPress={() => navigation.push('ListDiscomfort')}>
                     <Text style={styles.buttonText}>NEXT</Text>
                 </TouchableOpacity>
             </View>
@@ -75,8 +84,7 @@ function PeriodStartDate(): React.JSX.Element{
 
 const styles = StyleSheet.create({
     content: {
-        position: 'absolute',
-        top: 150,
+        top: 50,
         margin: 20,
         padding: 15,
     },

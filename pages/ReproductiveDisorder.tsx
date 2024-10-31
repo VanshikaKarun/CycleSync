@@ -8,7 +8,12 @@ import {View,
 import AMLLoading from '../components/AMLLoading';
 import InfoHeader from '../components/InfoHeader';
 
-function ReproductiveDisorder() : React.JSX.Element{
+import {NativeStackScreenProps, NativeStackNavigationProp} from "@react-navigation/native-stack"
+import {RootStackParameterList} from '../App'
+
+type ReproductiveDisorderProp = NativeStackScreenProps<RootStackParameterList, 'ReproductiveDisorder'>
+
+function ReproductiveDisorder({navigation}: ReproductiveDisorderProp) : React.JSX.Element{
     const anyDisorder = [
         "I don't know",
         "Yes",
@@ -36,7 +41,8 @@ function ReproductiveDisorder() : React.JSX.Element{
                 </View>
             </View>
             <View style={styles.alignButton}>
-            <TouchableOpacity style={styles.customButton}>
+            <TouchableOpacity style={styles.customButton}
+            onPress={() => navigation.push('Tabs')}>
                 <Text style={styles.buttonText}>NEXT</Text>
             </TouchableOpacity>
             </View>
@@ -46,7 +52,7 @@ function ReproductiveDisorder() : React.JSX.Element{
 
 const styles = StyleSheet.create({
     content: {
-        top: 150,
+        top: 50,
         margin: 20,
         padding: 15,
     },

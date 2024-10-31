@@ -1,41 +1,28 @@
 import {Text, View, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
 import Logo from '../components/Logo';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Footer from '../components/Footer';
+import CircularCalendar from '../components/CircularCalendar';
 
-function ActivitiesPage(): React.JSX.Element{
+function ActivitiesTab(): React.JSX.Element{
     return(
         <View style={{flexDirection: 'column'}}>
             <View style={styles.header}>
                 <View style={{flexDirection:'row', alignItems:'center'}}>
                     <TouchableOpacity style={styles.profile}>
-                    </TouchableOpacity>
+                    </TouchableOpacity> 
                     <View style={{flexDirection:'column', margin: 10}}>
                         <Text>Welcome</Text>
-                        <Text>Vanshika</Text>
+                        <Text style={{color:'#FF59A9', fontWeight: 'bold'}}>Vanshika</Text>
                     </View>
                 </View>
                 <Logo fontSize={28}/>
             </View>
-            <ScrollView contentContainerStyle={styles.scrollContent}>
-                <TouchableOpacity style={styles.calendarTrack}></TouchableOpacity>
+            <View style={styles.contentHeight}>
+            <ScrollView style={styles.scrollContent}>
+                <CircularCalendar/>
                 <TouchableOpacity style={styles.logPeriods}>
                     <Text style={{color:'white', fontSize:17}}>Log Period</Text>
                 </TouchableOpacity>
-                <View style={styles.myCycleContainer}>
-                    <Text style={{color:'black', fontSize: 18, fontWeight: 'bold'}}>My Cycle</Text>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                        <View style={styles.cycleLenContainer}>
-                            <Text style={{color:'#FF6B18', fontSize:15}}>Normal</Text>
-                            <Text style={{color: 'black'}}>28 Days</Text>
-                            <Text style={{color: 'black', fontSize: 12}}>Cycle Length</Text>
-                        </View>
-                        <View style={styles.periodLenContainer}>
-                            <Text style={{color:'#1DB623', fontSize:15}}>Normal</Text>
-                            <Text style={{color: 'black'}}>3 Days</Text>
-                            <Text style={{color: 'black', fontSize: 12}}>Period Length</Text>
-                        </View>
-                    </View>
-                </View>
                 <View style={styles.myCycleContainer}>
                     <Text style={{color:'black', fontSize: 18, fontWeight: 'bold'}}>My Cycle</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -57,32 +44,25 @@ function ActivitiesPage(): React.JSX.Element{
                 <TouchableOpacity style={[styles.rating, {borderColor: '#E83B8E', borderWidth: 2}]}>
                     <Text style={{color: '#E83B8E', fontSize: 16}}>Feedback</Text>
                 </TouchableOpacity>
+                <View style={styles.extraSpace}/>
             </ScrollView>
-            <View style={styles.footer}>
-                <TouchableOpacity style={styles.footerTab}>
-                    <Text>Activites</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.footerTab}>
-                    <Text>Calendar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.footerTab}> 
-                    <Text>Reports</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.footerTab}>
-                    <Text>Settings</Text>
-                </TouchableOpacity>
             </View>
+            <Footer selectedTab='Activites' onTabPress={(tab) => {
+                console.log('Tab pressed: ', tab);
+            }}/>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    extraSpace: {
+        height:100,
+    },
     header: {
         flexDirection: 'row',
         paddingHorizontal: 20,
         paddingVertical: 10,
         height: 90,
-        backgroundColor: 'yellow',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
@@ -91,6 +71,12 @@ const styles = StyleSheet.create({
         width: 60,
         borderRadius: 35,
         backgroundColor: 'grey'
+    },
+    contentHeight: {
+        height: '89%',
+    },
+    scrollContent: {
+        padding: 20,
     },
     calendarTrack: {
         marginTop: 10,
@@ -151,27 +137,6 @@ const styles = StyleSheet.create({
         height: 35,
         borderRadius: 50
     },
-    scrollContent: {
-        margin: 20,
-        flexGrow: 1,
-    },
-    footer: {
-        height: 60,
-        flexDirection: 'row',
-        borderColor: '#ccc',
-        justifyContent: 'space-around',
-        backgroundColor: 'yellow',
-        alignItems: 'center',
-        // position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
-    },
-    footerTab: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
 })
 
-export default ActivitiesPage;
+export default ActivitiesTab;

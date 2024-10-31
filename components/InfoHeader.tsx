@@ -1,18 +1,37 @@
-import {Text, View} from 'react-native';
-import BackButton from './BackButton';
+import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import Logo from './Logo';
+import Icons4 from 'react-native-vector-icons/Ionicons';
+
+import {useNavigation} from '@react-navigation/native'
 
 function InfoHeader(): React.JSX.Element {
+    const navigation = useNavigation();
     return(
-        <View>
+        <View style={styles.header}>
             <View>
-                <BackButton/>
+            <TouchableOpacity
+            onPress={() => navigation.goBack()}>
+                <Icons4 name="arrow-back-circle-outline" size={30} color={"black"}/>
+            </TouchableOpacity>
             </View>
-            <View style={{position:'absolute', top:10, right:30}}>
-                <Logo fontSize={28}/>
+            <View>
+            <Logo fontSize={28}/>
             </View>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    header: {
+        flexDirection: 'row', 
+        justifyContent: 'space-between',
+        alignItems:'center',
+        marginLeft: 20,
+        marginRight: 20,
+        marginTop: 10,
+        marginBottom: 10,
+        height: 80,
+    }
+})
 
 export default InfoHeader;

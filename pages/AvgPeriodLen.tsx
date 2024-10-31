@@ -9,9 +9,14 @@ import {View,
 import AMLLoading from '../components/AMLLoading';
 import InfoHeader from '../components/InfoHeader';
 
-function AvgPeriodLen(): React.JSX.Element{
+import {NativeStackScreenProps, NativeStackNavigationProp} from "@react-navigation/native-stack"
+import {RootStackParameterList} from '../App'
+
+type AvgPeriodLenProps = NativeStackScreenProps<RootStackParameterList, 'AvgPeriodLen'>
+
+function AvgPeriodLen({navigation}: AvgPeriodLenProps): React.JSX.Element{
     return(
-        <View style = {{flexDirection: 'column'}}>
+        <View>
             <InfoHeader/>
             <AMLLoading currentpage={2}/>
             <View style={[styles.content]}>
@@ -23,9 +28,11 @@ function AvgPeriodLen(): React.JSX.Element{
             </View>
             <View style={styles.alignButton}>
                 <TouchableOpacity style={[styles.customButton, {backgroundColor: '#FF59A9'}]}>
-                    <Text style={styles.buttonText}>NOT SURE</Text>
+                    <Text style={styles.buttonText}
+                    onPress={() => navigation.push('AvgCycleLen')}>NOT SURE</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.customButton}>
+                <TouchableOpacity style={styles.customButton}
+                onPress={() => navigation.push('AvgCycleLen')}>
                     <Text style={styles.buttonText}>NEXT</Text>
                 </TouchableOpacity>
             </View>
@@ -35,7 +42,7 @@ function AvgPeriodLen(): React.JSX.Element{
 
 const styles = StyleSheet.create({
     content: {
-        top: 150,
+        top: 50,
         margin: 20,
         padding: 15,
     },

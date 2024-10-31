@@ -1,0 +1,31 @@
+{
+    "users": [
+        {
+            "id":1,
+            "name": "Vanshika",
+            "email": "vanshikakarun@gmail.com",
+            "age": 22,
+            "preferences": {
+                "notification": true,
+                "theme": "light"
+            },
+            "healthData": {
+                "2024_oct": {
+                    "lastPeriodStartDate": "2024-09-02",
+                    "cycleLen": 28,
+                    "periodLen": 3
+                },
+                "2024_sept": {
+                    "lastPeriodStartDate": "2024-10-02",
+                    "cycleLen": 28,
+                    "periodLen": 3
+                },
+                "reproductiveDisorder": "No",
+                "listDiscomfort": [
+                    "Mood Swings",
+                    "Painful Menstrual Cramps"
+                ]
+            }
+        }
+    ]
+}

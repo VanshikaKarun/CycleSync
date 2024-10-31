@@ -1,13 +1,23 @@
 import * as React from 'react';
 import {Text, View, TouchableOpacity, StyleSheet} from 'react-native';
 import Logo from '../components/Logo';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
-function StartPage(): React.JSX.Element{
+import Icons from 'react-native-vector-icons/FontAwesome';
+import Icons2 from 'react-native-vector-icons/Entypo';
+import Icons3 from 'react-native-vector-icons/FontAwesome5';
+
+import {NativeStackScreenProps, NativeStackNavigationProp} from "@react-navigation/native-stack"
+import {RootStackParameterList} from '../App'
+
+type StartPageProps = NativeStackScreenProps<RootStackParameterList, 'StartPage'>
+
+function StartPage({route, navigation}: StartPageProps): React.JSX.Element{
+    const {userid} = route.params;
     return(
         <View>
-            <TouchableOpacity style={{ position: 'absolute', top: 10, right: 30}}>
-                <Icon name="close" size={30} color="black"/>
+            <TouchableOpacity style={{ position: 'absolute', top: 15, right: 20}}
+            onPress={() => navigation.goBack()}>
+                <Icons2 name="cross" size={30}/>
             </TouchableOpacity>
             <View style={styles.container}>
                 <Text style={{color: 'black', fontSize: 34, padding: 6, fontFamily: 'Scada'}}>Restore your data with</Text>
@@ -15,9 +25,10 @@ function StartPage(): React.JSX.Element{
             </View>
             <View style={styles.login}>
                 <TouchableOpacity style={styles.button} activeOpacity={0.6}>
-                    <Text style={styles.buttonText}>Login with Google</Text>
+                    <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} activeOpacity={0.6}>
+                <TouchableOpacity style={styles.button} activeOpacity={0.6}
+                onPress={() => navigation.push('BasicInfo')}>
                     <Text style={styles.buttonText}>Sign up</Text>
                 </TouchableOpacity>
             </View>

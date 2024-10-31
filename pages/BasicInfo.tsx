@@ -11,7 +11,14 @@ import React, {useState} from 'react';
 import AMLLoading from '../components/AMLLoading';
 import InfoHeader from '../components/InfoHeader';
 
-function BasicInfo(): React.JSX.Element{
+import {NativeStackScreenProps, NativeStackNavigationProp} from "@react-navigation/native-stack"
+import {RootStackParameterList} from '../App'
+import {useNavigation} from '@react-navigation/native'
+import Icons from 'react-native-vector-icons/Ionicons'
+
+type BasicInfoProps = NativeStackScreenProps<RootStackParameterList, 'BasicInfo'>
+
+function BasicInfo({navigation} : BasicInfoProps): React.JSX.Element{
 
     const [name, setName] = useState('');
     const [mail, setMail] = useState('');
@@ -31,10 +38,10 @@ function BasicInfo(): React.JSX.Element{
     };
 
     return(
-        <View>
+        <View >
             <InfoHeader/>
             <AMLLoading currentpage={1}/>
-            <View style={styles.content}>
+            <View style={[styles.content, {flexDirection: 'column'}]}>
                 <Text style={styles.title}>Help us get to know you better</Text>
                 <View style={{marginTop: 54, marginBottom:50}}>
                     <TextInput style={styles.input} placeholder='Name'  placeholderTextColor="rgba(0,0,0,0.4)"/>
@@ -45,7 +52,8 @@ function BasicInfo(): React.JSX.Element{
                 </View>
             </View>
             <View style={styles.alignButton}>
-            <TouchableOpacity style={styles.customButton}>
+            <TouchableOpacity style={styles.customButton}
+            onPress={() => navigation.push('AvgPeriodLen')}>
                 <Text style={styles.buttonText}>NEXT</Text>
             </TouchableOpacity>
             </View>
@@ -55,8 +63,7 @@ function BasicInfo(): React.JSX.Element{
 
 const styles = StyleSheet.create({
     content: {
-        position: 'absolute',
-        top: 150,
+        top: 50,
         margin: 20,
         padding: 15,
     },
