@@ -2,30 +2,60 @@
     "users": [
         {
             "id":1,
-            "name": "Vanshika",
-            "email": "vanshikakarun@gmail.com",
+            "name": "Lisa",
+            "email": "lisa@gmail.com",
             "age": 22,
             "preferences": {
                 "notification": true,
                 "theme": "light"
             },
-            "healthData": {
-                "2024_oct": {
+            "periodCycle": [
+                {"monthkey": "2024_Sept",
                     "lastPeriodStartDate": "2024-09-02",
                     "cycleLen": 28,
                     "periodLen": 3
                 },
-                "2024_sept": {
-                    "lastPeriodStartDate": "2024-10-02",
-                    "cycleLen": 28,
-                    "periodLen": 3
+                {"monthkey": "2024_Oct",
+                    "lastPeriodStartDate": "2024-10-05",
+                    "cycleLen": 29,
+                    "periodLen": 4
                 },
+                {
+                    "monthkey": "2024_Nov",
+                    "lastPeriodStartDate": "2024-11-08",
+                    "cycleLen": 30,
+                    "periodLen": 4
+                }
+            ],
+            "healthData": {
                 "reproductiveDisorder": "No",
                 "listDiscomfort": [
                     "Mood Swings",
                     "Painful Menstrual Cramps"
                 ]
             }
+        },
+        {
+            "id":2,
+            "name": "Neha",
+            "email": "neha@gmail.com",
+            "age": 25,
+            "preferences": {
+                "notification": true,
+                "theme": "light"
+            },
+            "periodCycle": [
+                {"monthkey": "2024_Oct",
+                    "lastPeriodStartDate": "2024-10-01",
+                    "cycleLen": 30,
+                    "periodLen": 8
+                },
+                {"monthkey": "2024_Nov",
+                    "lastPeriodStartDate": "2024-11-02",
+                    "cycleLen": 39,
+                    "periodLen": 10
+                }
+            ]
         }
     ]
 }

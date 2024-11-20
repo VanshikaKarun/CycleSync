@@ -5,11 +5,16 @@ import Icons2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Calendar } from 'react-native-calendars';
 import data from '../assets/backend/data.json';
 
-function CalendarTab() : React.JSX.Element{
-    const user = data.users[0];
-    const lastPeriodStartDate = new Date(user.healthData['2024_oct'].lastPeriodStartDate);
-    const cycleLen = user.healthData['2024_oct'].cycleLen;
-    const periodLen = user.healthData['2024_oct'].periodLen;
+interface CalendarTabProps {
+    userId: number;
+}
+
+function CalendarTab({userId}:CalendarTabProps) : React.JSX.Element{
+    const user = data.users.find((u) => u.id === userId) || data.users[0]; 
+    let lastPeriod = user.periodCycle[user.periodCycle.length - 1];
+    const lastPeriodStartDate = new Date(lastPeriod.lastPeriodStartDate);
+    const cycleLen = lastPeriod.cycleLen;
+    const periodLen = lastPeriod.periodLen;
 
     const periodStart = lastPeriodStartDate.getDate();
     const periodEnd = periodStart+periodLen-1;
@@ -38,13 +43,16 @@ function CalendarTab() : React.JSX.Element{
 
     const getMarkedDates = () => {
         const markedDates: {[key: string]: any} = {};
-        for(let i = 1; i<=daysInCurrentMonth; i++){
+        for (let i = 1; i <= daysInCurrentMonth; i++) {
             const date = new Date(today.getFullYear(), today.getMonth(), i);
-            if(i>=periodStart && i<=periodEnd){
-                markedDates[formatDate(date)] = {
+            const formattedDate = formatDate(date);
+    
+            // Marking different phases with custom colors
+            if (i >= periodStart && i <= periodEnd) {
+                markedDates[formattedDate] = {
                     customStyles: {
                         container: {
-                            backgroundColor: '#FFC7E2',
+                            backgroundColor: '#FFC7E2',  // Period phase color
                             borderRadius: 2,
                             borderWidth: 1,
                             borderColor: '#FFC7E2',
@@ -54,12 +62,11 @@ function CalendarTab() : React.JSX.Element{
                         },
                     },
                 };
-            }
-            else if(i>=fertilityStart && i<=fertilityEnd){
-                markedDates[formatDate(date)] = {
+            } else if (i >= fertilityStart && i <= fertilityEnd) {
+                markedDates[formattedDate] = {
                     customStyles: {
                         container: {
-                            backgroundColor: '#E9C1F3',
+                            backgroundColor: '#E9C1F3',  // Fertility phase color
                             borderRadius: 2,
                             borderWidth: 1,
                             borderColor: '#E9C1F3',
@@ -69,12 +76,11 @@ function CalendarTab() : React.JSX.Element{
                         },
                     },
                 };
-            }
-            else if(i>=ovulationStart && i<=ovulationEnd){
-                markedDates[formatDate(date)] = {
+            } else if (i >= ovulationStart && i <= ovulationEnd) {
+                markedDates[formattedDate] = {
                     customStyles: {
                         container: {
-                            backgroundColor: '#FFC794',
+                            backgroundColor: '#FFC794',  // Ovulation phase color
                             borderRadius: 2,
                             borderWidth: 1,
                             borderColor: '#FFC794',
@@ -84,12 +90,11 @@ function CalendarTab() : React.JSX.Element{
                         },
                     },
                 };
-            }
-            else {
-                markedDates[formatDate(date)] = {
+            } else {
+                markedDates[formattedDate] = {
                     customStyles: {
                         container: {
-                            backgroundColor: '#D9D9D9',
+                            backgroundColor: '#D9D9D9',  // Default day color
                             borderRadius: 2,
                             borderWidth: 1,
                             borderColor: '#D9D9D9',
@@ -99,20 +104,44 @@ function CalendarTab() : React.JSX.Element{
                         },
                     },
                 };
-                if(i===day) {
-                    markedDates[formatDate(date)] = {
-                        customStyles: {
-                            backgroundColor: 'gray'
+            }
+    
+            // Check if it's today and apply the border color based on phase
+            if (formattedDate === todayFormatted) {
+                let borderColor = '#0000FF'; // Default to blue for non-phase days
+                let bgColor = '#D9D9D9';     // Default background color for non-phase days
+    
+                // Set colors based on phase
+                if (i >= periodStart && i <= periodEnd) {
+                    borderColor = '#FF007F';  // Pink for period
+                    bgColor = '#FFC7E2';      // Light pink background for period
+                } else if (i >= fertilityStart && i <= fertilityEnd) {
+                    borderColor = '#9B4DFF';  // Purple for fertility
+                    bgColor = '#E9C1F3';      // Purple background for fertility
+                } else if (i >= ovulationStart && i <= ovulationEnd) {
+                    borderColor = '#FF8F50';  // Orange for ovulation
+                    bgColor = '#FFC794';      // Light orange background for ovulation
+                }
+    
+                markedDates[formattedDate] = {
+                    customStyles: {
+                        container: {
+                            backgroundColor: bgColor,  // Background color based on phase
+                            borderRadius: 2,
+                            borderWidth: 2,           // Border width for today
+                            borderColor: borderColor, // Border color based on phase
                         },
                         text: {
-                            color: 'black'
-                        }
-                    }
-                }
+                            color: 'white',            // Text color for today
+                            fontWeight: 'bold', 
+                        },
+                    },
+                };
             }
         }
         return markedDates;
     };
+    
 
     const getFirstDayOfMonth = () => {
         const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);

@@ -24,7 +24,8 @@ function StartPage({route, navigation}: StartPageProps): React.JSX.Element{
                 <Logo fontSize={45}/>
             </View>
             <View style={styles.login}>
-                <TouchableOpacity style={styles.button} activeOpacity={0.6}>
+                <TouchableOpacity style={styles.button} activeOpacity={0.6}
+                onPress={() => navigation.push('Login')}>
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} activeOpacity={0.6}

@@ -9,45 +9,54 @@ interface FooterProps {
 }
 
 function Footer({selectedTab, onTabPress}: FooterProps): React.JSX.Element{
+    const getTabStyle = (tab: string) => ({
+        icon: selectedTab === tab ? styles.activeText : styles.inactiveText,
+        text: selectedTab === tab ? styles.activeText : styles.inactiveText
+    });
+
     return(
         <View style={styles.footer}>
             <TouchableOpacity 
+            key="Activities"
             style={[styles.footerTab,
                 selectedTab === 'Activities' && styles.activeTab,
             ]} 
             onPress={() => onTabPress('Activities')}>
-                <Icons2 name="clock-outline" size={20} style={selectedTab === 'Activities' ? styles.activeText : styles.inactiveText}/>
-                <Text style={selectedTab === 'Activities' ? styles.activeText : styles.inactiveText}>
+                <Icons2 name="clock-outline" size={20} style={getTabStyle('Activities').icon}/>
+                <Text style={getTabStyle('Activities').text}>
                     Activites
                 </Text>
             </TouchableOpacity>
             <TouchableOpacity 
+            key="Calendar"
             style={[styles.footerTab,
                 selectedTab === 'Calendar' && styles.activeTab,
             ]} 
             onPress={() => onTabPress('Calendar')}>
-                <Icons2 name="calendar-blank-outline" size={18} style={selectedTab === 'Calendar' ? styles.activeText : styles.inactiveText}/>
-                <Text style={selectedTab === 'Calendar' ? styles.activeText : styles.inactiveText}>
+                <Icons2 name="calendar-blank-outline" size={18} style={getTabStyle('Calendar').icon}/>
+                <Text style={getTabStyle('Calendar').text}>
                     Calendar
                 </Text>
             </TouchableOpacity>
             <TouchableOpacity 
+            key="Reports"
             style={[styles.footerTab,
                 selectedTab === 'Reports' && styles.activeTab,
             ]} 
             onPress={() => onTabPress('Reports')}> 
-            <Icons3 name="file1" size={18} style={selectedTab === 'Reports' ? styles.activeText : styles.inactiveText}/>
-                <Text style={selectedTab === 'Reports' ? styles.activeText : styles.inactiveText}>
+            <Icons3 name="file1" size={18} style={getTabStyle('Reports').icon}/>
+                <Text style={getTabStyle('Reports').text}>
                     Reports
                 </Text>
             </TouchableOpacity>
             <TouchableOpacity 
+            key="Settings"
             style={[styles.footerTab,
                 selectedTab === 'Settings' && styles.activeTab,
             ]} 
             onPress={() => onTabPress('Settings')}>
-                <Icons name="settings-outline" size={20} style={selectedTab === 'Settings' ? styles.activeText : styles.inactiveText}/>
-                <Text style={selectedTab === 'Settings' ? styles.activeText : styles.inactiveText}>
+                <Icons name="settings-outline" size={20} style={getTabStyle('Settings').icon}/>
+                <Text style={getTabStyle('Settings').text}>
                     Settings
                 </Text>
             </TouchableOpacity>

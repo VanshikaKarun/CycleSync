@@ -3,26 +3,46 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Svg, Circle, G, Text as SvgText } from 'react-native-svg';
 import Icons2 from 'react-native-vector-icons/MaterialCommunityIcons';
 import data from '../assets/backend/data.json'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function CircularCalendar(): React.JSX.Element{
+interface CircularCalendarProps {
+    userId?: number;
+}
+
+function CircularCalendar({userId} : CircularCalendarProps): React.JSX.Element{
     const today = new Date();
-    const user = data.users[0];
-    const lastPeriodStartDate = new Date(user.healthData['2024_oct'].lastPeriodStartDate);
-    const cycleLen = user.healthData['2024_oct'].cycleLen;
-    const periodLen = user.healthData['2024_oct'].periodLen;
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+    const currentMonth = monthNames[today.getMonth()];
+    const user = data.users.find((u) => u.id === userId) || data.users[0]; 
+    let lastPeriod = user.periodCycle[user.periodCycle.length - 1];
+    let lastPeriodDate = new Date(lastPeriod.lastPeriodStartDate);
 
+    // if a new month has started and there is no data regarding this month in the JSON file
+    if(today.getMonth() !== lastPeriodDate.getMonth()){
+        const newformattedDate = lastPeriodDate.toISOString().split('T')[0];
+        const newPeriod = {
+            monthkey: today.getFullYear() + "_" + currentMonth,
+            lastPeriodStartDate: newformattedDate,
+            cycleLen: lastPeriod.cycleLen,
+            periodLen: lastPeriod.periodLen
+        }
+        user.periodCycle.push(newPeriod);
+        AsyncStorage.setItem('data', JSON.stringify(data));
+        lastPeriod = newPeriod;
+        lastPeriodDate = new Date(lastPeriod.lastPeriodStartDate);
+    }
+    const cycleLen = lastPeriod.cycleLen;
+    const periodLen = lastPeriod.periodLen;
     const getDaysInMonth = (month:number, year:number) => {
         return new Date(year, month+1, 0).getDate();
     };
-
     const totalDays = getDaysInMonth(today.getMonth(), today.getFullYear());
     const radius = 45;
     const strokeWidth = 9;
     const circumference = 2 * Math.PI * radius;
 
-    const periodStart = lastPeriodStartDate.getDate();
+    const periodStart = lastPeriodDate.getDate();
     const periodEnd = periodStart+periodLen-1;
-
     const ovulationEnd = Math.floor(periodStart+cycleLen/2);
     const ovulationStart = ovulationEnd-5;
     const fertilityStart = periodEnd+1;
@@ -39,8 +59,6 @@ function CircularCalendar(): React.JSX.Element{
     };
 
     const day = today.getDate();
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
-    const currentMonth = monthNames[today.getMonth()];
 
     const progressEmpty = calculateProgress(1, periodStart)
     const progressPeriod = calculateProgress(periodStart, periodEnd);

@@ -15,10 +15,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {NavigationContainer} from "@react-navigation/native"
-import {createNativeStackNavigator} from "@react-navigation/native-stack"
+import {NavigationContainer, RouteProp} from "@react-navigation/native";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
 
 import Start from './pages/Start';
+import Login from './pages/Login';
 import StartPage from './pages/StartPage';
 import BasicInfo from './pages/BasicInfo';
 import AvgPeriodLen from './pages/AvgPeriodLen';
@@ -33,6 +34,7 @@ import SettingsTab from './pages/SettingsTab';
 
 export type RootStackParameterList = {
   Start: undefined;
+  Login: undefined;
   StartPage: {userid: string};
   BasicInfo: undefined;
   AvgPeriodLen: undefined;
@@ -41,7 +43,7 @@ export type RootStackParameterList = {
   ListDiscomfort: undefined;
   ReproductiveDisorder: undefined;
   ActivitiesTab: undefined;
-  Tabs: undefined;
+  Tabs: {userId: number};
 };
 
 // Data coming will be of this type
@@ -65,6 +67,9 @@ function App(): React.JSX.Element {
           name='StartPage' component={StartPage}
           options={{headerShown: false}}/>
           <Stack.Screen
+          name='Login' component={Login}
+          options={{headerShown: false}}/>
+          <Stack.Screen
           name='BasicInfo' component={BasicInfo}
           options={{headerShown: false}}/>
           <Stack.Screen
@@ -84,9 +89,12 @@ function App(): React.JSX.Element {
           options={{headerShown: false}}/>
           <Stack.Screen 
           name='Tabs' 
-          options={{ headerShown: false }}>
-          {() => <MainTabs selectedTab={selectedTab} onTabChange={handleTabChange}/>}
-          </Stack.Screen>
+          options={{ headerShown: false }}
+          children={({route}:{route: RouteProp<RootStackParameterList, 'Tabs'>}) => {
+            const {userId} = route.params;
+            return <MainTabs selectedTab={selectedTab} onTabChange={handleTabChange} userId={userId}/>
+          }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
   );

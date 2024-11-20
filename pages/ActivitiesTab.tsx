@@ -3,7 +3,29 @@ import Logo from '../components/Logo';
 import Footer from '../components/Footer';
 import CircularCalendar from '../components/CircularCalendar';
 
-function ActivitiesTab(): React.JSX.Element{
+import data from '../assets/backend/data.json';
+
+interface ActivitiesTabProps {
+    userId: number;
+}
+
+function checkMenstrualHealth(user:any){
+    const periodLen = user?.periodCycle[user.periodCycle.length - 1].periodLen;
+    const cycleLen = user?.periodCycle[user.periodCycle.length - 1].cycleLen;
+    const periodStatus = periodLen > 7 ? "Irregular" : "Normal";
+    const cycleStatus = cycleLen > 30 ? "Irregular" : "Normal";
+    let gynec = "Eat Healthy, Stay Positive";
+    if(periodStatus==="Irregular" || cycleStatus==="Irregular"){
+        gynec = "May consult gynecologist";
+    }
+    return [periodStatus, cycleStatus, gynec];
+}
+
+function ActivitiesTab({userId}:ActivitiesTabProps): React.JSX.Element{
+    const user = data.users.find((user) => user.id === userId);
+    const periodLen = user?.periodCycle[user.periodCycle.length - 1].periodLen;
+    const cycleLen = user?.periodCycle[user.periodCycle.length - 1].cycleLen;
+    const [periodStatus, cycleStatus, gynec] = checkMenstrualHealth(user);
     return(
         <View style={{flexDirection: 'column'}}>
             <View style={styles.header}>
@@ -12,14 +34,14 @@ function ActivitiesTab(): React.JSX.Element{
                     </TouchableOpacity> 
                     <View style={{flexDirection:'column', margin: 10}}>
                         <Text>Welcome</Text>
-                        <Text style={{color:'#FF59A9', fontWeight: 'bold'}}>Vanshika</Text>
+                        <Text style={{color:'#FF59A9', fontWeight: 'bold'}}>{user?.name}</Text>
                     </View>
                 </View>
                 <Logo fontSize={28}/>
             </View>
             <View style={styles.contentHeight}>
             <ScrollView style={styles.scrollContent}>
-                <CircularCalendar/>
+                <CircularCalendar userId={user?.id}/>
                 <TouchableOpacity style={styles.logPeriods}>
                     <Text style={{color:'white', fontSize:17}}>Log Period</Text>
                 </TouchableOpacity>
@@ -27,16 +49,19 @@ function ActivitiesTab(): React.JSX.Element{
                     <Text style={{color:'black', fontSize: 18, fontWeight: 'bold'}}>My Cycle</Text>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                         <View style={styles.cycleLenContainer}>
-                            <Text style={{color:'#FF6B18', fontSize:15}}>Normal</Text>
-                            <Text style={{color: 'black'}}>28 Days</Text>
+                            <Text style={{color:'#FF6B18', fontSize:15}}>{cycleStatus}</Text>
+                            <Text style={{color: 'black'}}>{cycleLen} Days</Text>
                             <Text style={{color: 'black', fontSize: 12}}>Cycle Length</Text>
                         </View>
                         <View style={styles.periodLenContainer}>
-                            <Text style={{color:'#1DB623', fontSize:15}}>Normal</Text>
-                            <Text style={{color: 'black'}}>3 Days</Text>
+                            <Text style={{color:'#1DB623', fontSize:15}}>{periodStatus}</Text>
+                            <Text style={{color: 'black'}}>{periodLen} Days</Text>
                             <Text style={{color: 'black', fontSize: 12}}>Period Length</Text>
                         </View>
                     </View>
+                </View>
+                <View style={{marginTop: 14}}>
+                <Text style={{color: 'black', fontSize: 15, textAlign: 'center'}}>{gynec}</Text>
                 </View>
                 <TouchableOpacity style={[styles.rating, {backgroundColor: '#FF59A9', marginTop: 50}]}>
                     <Text style={{color: 'white', fontSize: 16}}>Rate Us Now</Text>

@@ -9,9 +9,10 @@ import Footer from './Footer';
 interface MainTabsProps {
     selectedTab: string;
     onTabChange: (tab: string) => void;
+    userId: number;
   }
   
-const MainTabs = ({ selectedTab, onTabChange }: MainTabsProps) => {
+const MainTabs = ({ selectedTab, onTabChange, userId }: MainTabsProps) => {
 
     useEffect(() => {
         if(!selectedTab){
@@ -28,7 +29,7 @@ const MainTabs = ({ selectedTab, onTabChange }: MainTabsProps) => {
         case 'Settings':
           return <SettingsTab />;
         default:
-          return <ActivitiesTab />;
+          return <ActivitiesTab userId={userId}/>;
       }
     };
   
